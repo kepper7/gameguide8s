@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лучшие гайды — GTA, Minecraft, Roblox</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Segoe UI", sans-serif; background: radial-gradient(circle at top, #1b0033, #000); color: #fff; overflow-x: hidden; }
+header { padding: 40px 20px; text-align: center; font-size: 42px; font-weight: 800; background: linear-gradient(90deg, #ff00e6, #7a00ff, #00d0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 40px rgba(140,0,255,.4); }
+.container { max-width: 1200px; margin: auto; padding: 20px; }
+.games { display: flex; justify-content: center; gap: 25px; margin-bottom: 35px; }
+.game-btn { padding: 12px 25px; background: #111; border: 2px solid #7a00ff; border-radius: 14px; cursor: pointer; font-size: 18px; color: #ccc; font-weight: 600; transition: .25s; box-shadow: 0 0 15px rgba(120,0,255,.3); }
+.game-btn:hover { color: white; transform: translateY(-4px) scale(1.05); border-color: #ff00e6; box-shadow: 0 0 25px #ff00e6; }
+.guides { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+.card { background: #0c0c0c; padding: 25px; border-radius: 18px; border: 1px solid #3a007a; backdrop-filter: blur(10px); box-shadow: 0 0 25px rgba(140,0,255,0.3); transition: .35s; position: relative; cursor: pointer; overflow: hidden; }
+.card::before { content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(#ff00e6, transparent, #7a00ff, transparent, #00d0ff); animation: rotate 6s linear infinite; opacity: .15; }
+@keyframes rotate { 100% { transform: rotate(360deg); } }
+.card-content { position: relative; z-index: 5; }
+.card h3 { margin-bottom: 10px; font-size: 24px; color: #d991ff; }
+.card p { color: #ccc; line-height: 1.5; }
+.card:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 0 40px rgba(255,0,225,.4); }
+/* МОДАЛЬНОЕ ОКНО */
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; z-index: 1000; }
+.modal.open { display: flex; }
+.modal-content { background: #111; padding: 30px; border-radius: 18px; max-width: 800px; width: 90%; position: relative; }
+.modal-content h2 { margin-bottom: 20px; color: #ff88ff; }
+.modal-content ul { margin-left: 20px; }
+.modal-content li { margin-bottom: 10px; }
+.close-btn { position: absolute; top: 15px; right: 20px; background: transparent; border: none; font-size: 28px; color: #fff; cursor: pointer; }
+footer { text-align: center; padding: 30px; margin-top: 40px; opacity: .7; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<header>Лучшие гайды по играм 🎮</header>
+
+<div class="container">
+<div class="games">
+<button class="game-btn">GTA V</button>
+<button class="game-btn">Minecraft</button>
+<button class="game-btn">Roblox</button>
+</div>
+
+<div class="guides" id="guides"></div>
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<button class="close-btn" id="closeModal">×</button>
+<h2 id="modalTitle"></h2>
+<ul id="modalList"></ul>
+</div>
+</div>
+
+<footer>© 2025 Лучшие гайды. Создано для игроков.</footer>
+
+<script>
+const guidesData = [
+  {title: 'GTA V — Как стать миллионером', game:'GTA V', items:['Заработок на миссиях','Ограбления и стратегии','Покупка недвижимости','Советы по фарму денег']},
+  {title: 'Minecraft — Идеальное начало игры', game:'Minecraft', items:['Первые 24 часа','Выбор места для базы','Крафтинг и ресурсы','Защита от мобов']},
+  {title: 'Roblox — Создай свою игру', game:'Roblox', items:['Основы Roblox Studio','Создание карты','Скрипты Lua','Публикация и тестирование']},
+  {title: 'GTA V — Лучшие машины', game:'GTA V', items:['Список топ-10 авто','Где найти редкие машины','Настройка авто','Дрифт и гонки']},
+  {title: 'Minecraft — 5 красивых домов', game:'Minecraft', items:['Модерн дом','Деревенский стиль','Подземный бункер','Башня мага','Мини-крепость']}
+];
+
+const guidesContainer = document.getElementById('guides');
+const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const modalList = document.getElementById('modalList');
+const closeModal = document.getElementById('closeModal');
+
+function renderGuides(list){
+  guidesContainer.innerHTML = '';
+  list.forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class='card-content'><h3>${g.title}</h3><p>Нажмите, чтобы открыть гайд</p></div>`;
+    card.addEventListener('click', ()=>openModal(g));
+    guidesContainer.appendChild(card);
+  });
+}
+
+function openModal(guide){
+  modalTitle.textContent = guide.title;
+  modalList.innerHTML = '';
+  guide.items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    modalList.appendChild(li);
+  });
+  modal.classList.add('open');
+}
+
+closeModal.addEventListener('click', ()=> modal.classList.remove('open'));
+modal.addEventListener('click', e=>{if(e.target===modal) modal.classList.remove('open')});
+
+renderGuides(guidesData);
+</script>
+
+</body>
+</html>
+
